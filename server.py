@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import os
 import pickle
 import pandas as pd
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
 from flask import Flask, request, render_template, flash, redirect, session, abort, jsonify
 from datetime import datetime
 from analytics import write_to_csv_departments, write_to_csv_teachers
@@ -10,7 +13,7 @@ from analytics import get_counts, get_tables, get_titles
 from teacherdashboard import get_feedback_counts
 from access_user import verify
 import excel_fill
-
+load_dotenv(override=True)
 app = Flask(__name__)
 app.secret_key = os.urandom(12) # for session creation and management security
 UPLOAD_FOLDER = 'uploads'  # folder to store uploaded files
@@ -224,6 +227,36 @@ def display():
     else:
         df = pd.read_csv('dataset/database.csv')
         return render_template('feedbacks.html', tables=[df.to_html(classes='data', header="true")])
+@app.route('/send-email', methods=['POST'])
+def send_email():
+    try:
+        
+        name = request.form.get('name', '')
+        email = request.form.get('email', '')
+        subject = request.form.get('subject', '')
+        message = request.form.get('message', '')
 
+        msg = EmailMessage()
+        msg['Subject'] = subject
+        msg['From'] = os.getenv('MAIL_USERNAME')
+        msg['To'] = os.getenv('MAIL_USERNAME')
+        msg['Reply-To'] = email
+        msg.set_content(
+            f"Name: {name}\n"
+            f"Email: {email}\n\n"
+            f"Message:\n{message}"
+        )
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=30) as smtp:
+            smtp.login(
+                os.getenv('MAIL_USERNAME'),
+                os.getenv('MAIL_PASSWORD')
+            )
+            smtp.send_message(msg)
+
+        return "Email sent successfully!"
+
+    except Exception as e:
+        return f"Email error: {str(e)}", 500
 
 # app.run(port=5978, host='0.0.0.0', debug=True)

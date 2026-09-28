@@ -5,3 +5,4 @@ scikit-learn
 Flask==2.2.5
 flask-mysql
 gunicorn
+python-dotenv
