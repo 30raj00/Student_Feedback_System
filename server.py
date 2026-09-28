@@ -230,7 +230,8 @@ def display():
 @app.route('/send-email', methods=['POST'])
 def send_email():
     try:
-        
+        print("EMAIL:", os.getenv('MAIL_USERNAME'))
+        print("PASSWORD LENGTH:", len(os.getenv('MAIL_PASSWORD', '')))
         name = request.form.get('name', '')
         email = request.form.get('email', '')
         subject = request.form.get('subject', '')
@@ -247,7 +248,8 @@ def send_email():
             f"Message:\n{message}"
         )
 
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=30) as smtp:
+        with smtplib.SMTP('smtp.gmail.com', 587, timeout=30) as smtp:
+            smtp.starttls()
             smtp.login(
                 os.getenv('MAIL_USERNAME'),
                 os.getenv('MAIL_PASSWORD')
