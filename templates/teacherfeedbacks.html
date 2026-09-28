@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Feedbacks</title>
+  <!-- Bootstrap 3 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    .full-height {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .content {
+      flex: 1;
+      padding: 40px 20px;
+    }
+    .panel {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ddd;
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+    <div class="footer">
+        <form action="/admin" method="get">
+          <button class="btn btn-success">Go Back to Admin Panel</button>
+        </form>
+      </div>
+  <div class="full-height">
+    <div class="container content">
+      <h2 class="text-center mb-4">Teacher Feedback Responses</h2>
+
+      {% for table in tables %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">Feedback Table 2</h4>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              {{ table|replace('<table', '<table class="table table-bordered table-striped table-hover"')|safe }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+
+  </div>
+</body>
+</html>
