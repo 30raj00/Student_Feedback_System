@@ -9,14 +9,14 @@ conn = sqlite3.connect('user_data.db')
 cursor = conn.cursor()
 
 #  create table
-# cursor.execute('''
-#                CREATE TABLE users (
-#                    id INTEGER PRIMARY KEY,
-#                    username TEXT UNIQUE NOT NULL,
-#                    password TEXT NOT NULL,
-#                    authority TEXT NOT NULL
-#                )
-#                ''')
+cursor.execute('''
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY,
+                    username TEXT UNIQUE NOT NULL,
+                    password TEXT NOT NULL,
+                    authority TEXT NOT NULL
+                )
+                ''')
 
 # # (?, ?, ?) placeholder provides security against SQL injections by preventing malicious users from altering the structure of the sql queries
 # # Insert student data
@@ -40,9 +40,8 @@ cursor = conn.cursor()
 # Insert other authories data like hod
  #cursor.execute("INSERT INTO users (username, password, authority) VALUES (?, ?, ?)",
             #    ('hod', 'hod', 'hod'))
-cursor.execute("INSERT INTO users (username, password, authority) VALUES (?, ?, ?)",
-               ('admin', 'admin', 'admin'))
-
+# cursor.execute("INSERT INTO users (username, password, authority) VALUES (?, ?, ?)",
+#                ('admin', 'admin', 'admin'))
 
 
 conn.commit()
